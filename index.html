@@ -1,0 +1,909 @@
+<!doctype html>
+
+<html lang="my">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Our Little Memories 💗</title>
+
+  <style>
+
+    :root {
+
+      --pink: #e99ab2; --pink-deep: #b84f75; --cream: #fff8ed;
+
+      --paper: #fffdf9; --ink: #49333c; --muted: #876f79;
+
+      --line: #f0dce3; --shadow: 0 12px 34px rgba(123,63,83,.10);
+
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+
+      margin: 0; min-height: 100vh; color: var(--ink);
+
+      background: radial-gradient(circle at 10% 0%, #ffe8ef 0, transparent 35%),
+
+                  linear-gradient(135deg, var(--cream), #fff0f4);
+
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    }
+
+    button,input,textarea,select { font: inherit; }
+
+    button {
+
+      border: 0; border-radius: 13px; padding: 11px 16px; cursor: pointer;
+
+      background: var(--pink-deep); color: white; font-weight: 700;
+
+    }
+
+    button.secondary { background: #f7e3e9; color: var(--pink-deep); }
+
+    button:disabled { opacity: .55; cursor: wait; }
+
+    .wrap { width: min(1100px,calc(100% - 28px)); margin: auto; padding: 24px 0 60px; }
+
+    header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; }
+
+    .brand { display:flex; gap:12px; align-items:center; }
+
+    .heart { display:grid; place-items:center; width:48px; height:48px; border-radius:17px; background:#f7dce5; font-size:24px; }
+
+    h1 { font-size:clamp(24px,4vw,38px); margin:0; letter-spacing:-.04em; }
+
+    .sub { margin:5px 0 0; color:var(--muted); font-size:14px; }
+
+    .panel { background:rgba(255,253,249,.92); border:1px solid var(--line); border-radius:24px; padding:clamp(18px,4vw,30px); box-shadow:var(--shadow); }
+
+    .hero { margin-bottom:20px; }
+
+    .hero h2 { margin:0 0 8px; font-size:clamp(21px,3vw,29px); }
+
+    .hero p { margin:0; color:var(--muted); line-height:1.7; }
+
+    .auth { max-width:460px; margin:40px auto; }
+
+    .formgrid { display:grid; gap:12px; }
+
+    label { display:grid; gap:6px; color:var(--muted); font-size:13px; font-weight:650; }
+
+    input,textarea,select { width:100%; padding:12px 13px; border:1px solid var(--line); background:white; color:var(--ink); border-radius:12px; outline:none; }
+
+    input:focus,textarea:focus,select:focus { border-color:var(--pink); box-shadow:0 0 0 3px #fbe8ee; }
+
+    textarea { min-height:88px; resize:vertical; }
+
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .status { margin:12px 0 0; font-size:14px; color:var(--muted); overflow-wrap:anywhere; }
+
+    .status.error { color:#a12f45; } .status.ok { color:#28734c; }
+
+    .hidden { display:none !important; }
+
+    .admin { margin:22px 0; }
+
+    .admin h3 { margin:0 0 14px; }
+
+    .admin-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+
+    .subpanel { border:1px solid var(--line); border-radius:18px; padding:17px; background:#fffaf7; }
+
+    .subpanel h4 { margin:0 0 12px; }
+
+    .gallery-head { display:flex; justify-content:space-between; gap:12px; align-items:end; margin:26px 0 14px; }
+
+    .gallery-head h2 { margin:0; }
+
+    .gallery { columns:3 230px; column-gap:16px; }
+
+    .album { break-inside:avoid; margin:0 0 16px; overflow:hidden; border-radius:18px; background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
+
+    .album-title { padding:14px 15px 5px; font-weight:800; }
+
+    .album-desc { padding:0 15px 13px; color:var(--muted); font-size:13px; line-height:1.6; }
+
+    .photo { width:100%; display:block; cursor:zoom-in; background:#f7e5eb; }
+
+    .caption { padding:9px 13px 13px; color:var(--muted); font-size:13px; overflow-wrap:anywhere; }
+
+    .empty { text-align:center; color:var(--muted); padding:34px 10px; border:1px dashed #e8cbd5; border-radius:18px; }
+
+    .lightbox { position:fixed; inset:0; z-index:10; background:rgba(39,22,30,.88); display:grid; place-items:center; padding:20px; }
+
+    .lightbox img { max-width:min(100%,1000px); max-height:82vh; object-fit:contain; border-radius:12px; }
+
+    .lightbox button { position:absolute; top:18px; right:18px; }
+
+    footer { text-align:center; color:var(--muted); font-size:12px; padding:30px 0 0; }
+
+    @media(max-width:700px) { header { align-items:flex-start; } .admin-grid { grid-template-columns:1fr; } .gallery { columns:2 145px; column-gap:10px; } .album { margin-bottom:10px; } }
+
+    @media(max-width:420px) { .gallery { columns:1; } }
+
+  </style>
+
+</head>
+
+<body>
+
+<main class="wrap">
+
+  <header>
+
+    <div class="brand">
+
+      <div class="heart">💗</div>
+
+      <div><h1>Our Little Memories</h1><p class="sub">အမှတ်တရလေးတွေကို သိမ်းထားတဲ့ ကိုယ်ပိုင်နေရာလေး</p></div>
+
+    </div>
+
+    <div class="row"><span id="who" class="sub"></span><button id="logoutBtn" class="secondary hidden">Logout</button></div>
+
+  </header>
+
+
+
+  <section id="configPanel" class="panel auth hidden">
+
+    <h2>စတင်ချိတ်ဆက်ရန် ⚙️</h2>
+
+    <p class="sub">Supabase Project URL နဲ့ public anon/publishable key ကို CONFIG မှာ ဖြည့်ပါ။</p>
+
+    <p id="configStatus" class="status error"></p>
+
+  </section>
+
+
+
+  <section id="loginPanel" class="panel auth hidden">
+
+    <h2>Welcome back 💌</h2>
+
+    <p class="sub" style="margin-bottom:18px">ကိုယ့်အကောင့်နဲ့ ဝင်ပြီး ကိုယ့်အမှတ်တရတွေကို ကြည့်ပါ။</p>
+
+    <form id="loginForm" class="formgrid">
+
+      <label>Email<input id="email" type="email" autocomplete="username" required></label>
+
+      <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+
+      <button id="loginBtn" type="submit">Login</button>
+
+    </form>
+
+    <p id="loginStatus" class="status" aria-live="polite"></p>
+
+  </section>
+
+
+
+  <section id="appPanel" class="hidden">
+
+    <div class="panel hero"><h2>Little moments, forever memories 🌷</h2><p>ဒီနေရာမှာ ကိုယ့်အတွက် သတ်မှတ်ထားတဲ့ Album နဲ့ ဓာတ်ပုံတွေကိုပဲ မြင်ရပါမယ်။</p></div>
+
+    <section id="adminPanel" class="panel admin hidden">
+
+      <h3>Admin Studio ✨</h3>
+
+      <p class="sub" style="margin-bottom:16px">Admin အကောင့်သာ Album ဖန်တီးပြီး ဓာတ်ပုံတင်နိုင်ပါတယ်။ User အသစ်ကို Supabase Dashboard → Authentication → Users မှာ အရင်ဖန်တီးပါ။</p>
+
+      <div class="admin-grid">
+
+        <div class="subpanel">
+
+          <h4>Album အသစ်ဖန်တီးရန်</h4>
+
+          <form id="albumForm" class="formgrid">
+
+            <label>Album ပိုင်ရှင် User<select id="albumOwner" required></select></label>
+
+            <label>Album အမည်<input id="albumTitle" maxlength="120" required placeholder="ဥပမာ — Our First Date"></label>
+
+            <label>ဖော်ပြချက်<textarea id="albumDescription" maxlength="1000" placeholder="ဒီအမှတ်တရအကြောင်း..."></textarea></label>
+
+            <label>အခြေအနေ<select id="albumStatus"><option value="published">Published — User မြင်နိုင်</option><option value="draft">Draft — Admin သာမြင်နိုင်</option></select></label>
+
+            <button type="submit">Create Album</button>
+
+          </form>
+
+          <p id="albumStatusText" class="status" aria-live="polite"></p>
+
+        </div>
+
+        <div class="subpanel">
+
+          <h4>ဓာတ်ပုံတင်ရန်</h4>
+
+          <form id="photoForm" class="formgrid">
+
+            <label>Album<select id="photoAlbum" required></select></label>
+
+            <label>ဓာတ်ပုံများ<input id="photoFiles" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple required></label>
+
+            <label>Caption (ဓာတ်ပုံအားလုံးအတွက် တူညီမည်)<textarea id="photoCaption" maxlength="1000" placeholder="အမှတ်တရစာသားလေး..."></textarea></label>
+
+            <button id="uploadBtn" type="submit">Upload Photos</button>
+
+          </form>
+
+          <p id="photoStatusText" class="status" aria-live="polite"></p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="gallery-head"><div><h2>Our Albums</h2><p class="sub">အမှတ်တရဓာတ်ပုံများ 💞</p></div><button id="refreshBtn" class="secondary">Refresh</button></div>
+
+    <div id="gallery" class="gallery"><div class="empty">Album တွေကို ဖွင့်နေပါတယ်…</div></div>
+
+    <p id="appStatus" class="status" aria-live="polite"></p>
+
+  </section>
+
+  <footer>Made with ♡ · Private memories, shared with care</footer>
+
+</main>
+
+
+
+<div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Photo preview">
+
+  <button id="closeLightbox">ပိတ်ရန် ✕</button><img id="lightboxImg" alt="Expanded memory photo">
+
+</div>
+
+
+
+<!-- Public key only. Never put a service_role or secret key in browser code. -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+  // CONFIG: Replace these placeholders with your Supabase Project URL and public anon/publishable key.
+
+const SUPABASE_URL = "https://yfzwdvyczynulhxxszvz.supabase.co";
+
+  const SUPABASE_ANON_KEY = "sb_publishable_tiz4QMGo4kZB_XHGlslcAQ_quorzPFE";
+
+
+
+  const $ = (id) => document.getElementById(id);
+
+  const configReady =
+
+    SUPABASE_URL.startsWith("https://") &&
+
+    !SUPABASE_URL.includes("PASTE_") &&
+
+    SUPABASE_ANON_KEY.length > 20 &&
+
+    !SUPABASE_ANON_KEY.includes("PASTE_");
+
+
+
+  let supabaseClient = null;
+
+  let currentUser = null;
+
+  let currentProfile = null;
+
+  let userMap = new Map();
+
+  let albumMap = new Map();
+
+
+
+  function message(id, text, kind = "") {
+
+    const el = $(id);
+
+    el.textContent = text;
+
+    el.className = "status" + (kind ? " " + kind : "");
+
+  }
+
+  function safeText(value) { return String(value ?? ""); }
+
+
+
+  if (!configReady || !window.supabase) {
+
+    $("configPanel").classList.remove("hidden");
+
+    $("loginPanel").classList.add("hidden");
+
+    message("configStatus", !window.supabase
+
+      ? "Supabase SDK မတင်နိုင်ပါ။ Internet/CDN ချိတ်ဆက်မှုကို စစ်ပါ။"
+
+      : "CONFIG ထဲမှာ Project URL နဲ့ public key ကို မှန်ကန်စွာ ဖြည့်ပါ။", "error");
+
+  } else {
+
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    $("configPanel").classList.add("hidden");
+
+    $("loginPanel").classList.remove("hidden");
+
+    init();
+
+  }
+
+
+
+  async function init() {
+
+    try {
+
+      const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+      if (error) throw error;
+
+      if (session) await enterApp(session.user);
+
+      supabaseClient.auth.onAuthStateChange((_event, session) => {
+
+        if (!session) showLogin();
+
+      });
+
+    } catch (error) {
+
+      message("loginStatus", "Supabase ချိတ်ဆက်မှုအမှား: " + error.message, "error");
+
+    }
+
+  }
+
+
+
+  function showLogin() {
+
+    currentUser = null;
+
+    currentProfile = null;
+
+    $("appPanel").classList.add("hidden");
+
+    $("logoutBtn").classList.add("hidden");
+
+    $("who").textContent = "";
+
+    $("loginPanel").classList.remove("hidden");
+
+  }
+
+
+
+  async function enterApp(user) {
+
+    currentUser = user;
+
+    const { data: profile, error } = await supabaseClient
+
+      .from("profiles").select("id, username, role, status").eq("id", user.id).single();
+
+
+
+    if (error || !profile) {
+
+      message("loginStatus", "Profile ကို ဖတ်မရပါ။ SQL policies/grants ကို စစ်ပါ။ " + (error?.message || ""), "error");
+
+      await supabaseClient.auth.signOut();
+
+      return;
+
+    }
+
+    if (profile.status !== "active") {
+
+      message("loginStatus", "ဒီအကောင့်ကို ယာယီပိတ်ထားပါတယ်။ Admin ကို ဆက်သွယ်ပါ။", "error");
+
+      await supabaseClient.auth.signOut();
+
+      return;
+
+    }
+
+
+
+    currentProfile = profile;
+
+    $("loginPanel").classList.add("hidden");
+
+    $("appPanel").classList.remove("hidden");
+
+    $("logoutBtn").classList.remove("hidden");
+
+    $("who").textContent = profile.role === "admin" ? "Admin mode ✨" : "မင်္ဂလာပါ 💗";
+
+    $("adminPanel").classList.toggle("hidden", profile.role !== "admin");
+
+    if (profile.role === "admin") await loadAdminData();
+
+    await loadGallery();
+
+  }
+
+
+
+  $("loginForm").addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const btn = $("loginBtn");
+
+    btn.disabled = true;
+
+    message("loginStatus", "ဝင်နေပါတယ်…");
+
+    try {
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+
+        email: $("email").value.trim(),
+
+        password: $("password").value
+
+      });
+
+      if (error) throw error;
+
+      await enterApp(data.user);
+
+    } catch (error) {
+
+      message("loginStatus", "Login မအောင်မြင်ပါ: " + error.message, "error");
+
+    } finally {
+
+      btn.disabled = false;
+
+    }
+
+  });
+
+
+
+  $("logoutBtn").addEventListener("click", async () => {
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) message("appStatus", "Logout error: " + error.message, "error");
+
+    showLogin();
+
+  });
+
+  $("refreshBtn").addEventListener("click", loadGallery);
+
+
+
+  async function loadAdminData() {
+
+    const { data: users, error: usersError } = await supabaseClient
+
+      .from("profiles").select("id, username, role, status").order("username");
+
+    if (usersError) { message("appStatus", "User list မဖတ်နိုင်ပါ: " + usersError.message, "error"); return; }
+
+
+
+    userMap = new Map((users || []).map(u => [u.id, u]));
+
+    const owner = $("albumOwner");
+
+    owner.replaceChildren();
+
+    (users || []).filter(u => u.role === "user" && u.status === "active").forEach(u => {
+
+      const option = document.createElement("option");
+
+      option.value = u.id;
+
+      option.textContent = safeText(u.username) + " · " + u.id.slice(0, 8);
+
+      owner.append(option);
+
+    });
+
+    if (!owner.options.length) {
+
+      const option = document.createElement("option");
+
+      option.value = "";
+
+      option.textContent = "အရင်ဆုံး Dashboard မှာ User account ဖန်တီးပါ";
+
+      owner.append(option);
+
+    }
+
+
+
+    const { data: albums, error: albumError } = await supabaseClient
+
+      .from("albums").select("id,user_id,title,status").order("created_at", { ascending: false });
+
+    if (albumError) { message("appStatus", "Album list မဖတ်နိုင်ပါ: " + albumError.message, "error"); return; }
+
+
+
+    albumMap = new Map((albums || []).map(a => [a.id, a]));
+
+    const select = $("photoAlbum");
+
+    select.replaceChildren();
+
+    (albums || []).forEach(a => {
+
+      const option = document.createElement("option");
+
+      option.value = a.id;
+
+      option.textContent = `${a.title} · ${userMap.get(a.user_id)?.username || "User"} · ${a.status}`;
+
+      select.append(option);
+
+    });
+
+    if (!select.options.length) {
+
+      const option = document.createElement("option");
+
+      option.value = "";
+
+      option.textContent = "ဓာတ်ပုံမတင်ခင် Album ဖန်တီးပါ";
+
+      select.append(option);
+
+    }
+
+  }
+
+
+
+  $("albumForm").addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const ownerId = $("albumOwner").value;
+
+    if (!ownerId) { message("albumStatusText", "အရင်ဆုံး User account ဖန်တီးပါ။", "error"); return; }
+
+    const payload = {
+
+      user_id: ownerId,
+
+      title: $("albumTitle").value.trim(),
+
+      description: $("albumDescription").value.trim(),
+
+      status: $("albumStatus").value
+
+    };
+
+    const { error } = await supabaseClient.from("albums").insert(payload);
+
+    if (error) { message("albumStatusText", "Album ဖန်တီးမရပါ: " + error.message, "error"); return; }
+
+    message("albumStatusText", "Album ဖန်တီးပြီးပါပြီ 💗", "ok");
+
+    $("albumForm").reset();
+
+    await loadAdminData();
+
+    await loadGallery();
+
+  });
+
+
+
+  $("photoForm").addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const albumId = $("photoAlbum").value;
+
+    const files = Array.from($("photoFiles").files || []);
+
+    const album = albumMap.get(albumId);
+
+    if (!album || !files.length) { message("photoStatusText", "Album နဲ့ ဓာတ်ပုံကို ရွေးပါ။", "error"); return; }
+
+
+
+    const btn = $("uploadBtn");
+
+    btn.disabled = true;
+
+    let uploaded = 0;
+
+    let failed = 0;
+
+    try {
+
+      for (const file of files) {
+
+        if (!/^image\/(jpeg|png|webp|gif)$/.test(file.type)) {
+
+          message("photoStatusText", file.name + " က ခွင့်ပြုထားတဲ့ image format မဟုတ်ပါ။", "error");
+
+          failed++;
+
+          continue;
+
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+
+          message("photoStatusText", file.name + " က 10 MB ထက်ကြီးနေပါတယ်။", "error");
+
+          failed++;
+
+          continue;
+
+        }
+
+        const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+        const path = `${album.user_id}/${crypto.randomUUID()}-${cleanName}`;
+
+        const { error: uploadError } = await supabaseClient.storage.from("private-photos").upload(path, file, {
+
+          contentType: file.type, upsert: false
+
+        });
+
+        if (uploadError) {
+
+          message("photoStatusText", "Upload မအောင်မြင်ပါ: " + uploadError.message, "error");
+
+          failed++;
+
+          continue;
+
+        }
+
+        const { error: insertError } = await supabaseClient.from("photos").insert({
+
+          album_id: album.id, user_id: album.user_id, image_path: path,
+
+          caption: $("photoCaption").value.trim()
+
+        });
+
+        if (insertError) {
+
+          await supabaseClient.storage.from("private-photos").remove([path]);
+
+          message("photoStatusText", "Photo record မသိမ်းနိုင်ပါ: " + insertError.message, "error");
+
+          failed++;
+
+          continue;
+
+        }
+
+        uploaded++;
+
+      }
+
+      if (uploaded) message("photoStatusText", `${uploaded} ပုံ တင်ပြီးပါပြီ 💗${failed ? ` (${failed} ပုံ မအောင်မြင်ပါ)` : ""}`, failed ? "" : "ok");
+
+      else if (!failed) message("photoStatusText", "တင်မယ့်ပုံ မရှိပါ။", "error");
+
+      await loadGallery();
+
+    } catch (error) {
+
+      message("photoStatusText", "Upload error: " + error.message, "error");
+
+    } finally {
+
+      btn.disabled = false;
+
+    }
+
+  });
+
+
+
+  async function loadGallery() {
+
+    if (!currentUser || !currentProfile) return;
+
+    $("gallery").replaceChildren();
+
+    message("appStatus", "Album တွေကို ဖွင့်နေပါတယ်…");
+
+
+
+    const { data: albums, error } = await supabaseClient.from("albums")
+
+      .select("id,user_id,title,description,status,created_at")
+
+      .order("sort_order").order("created_at", { ascending: false });
+
+
+
+    if (error) {
+
+      $("gallery").innerHTML = '<div class="empty">Album မဖတ်နိုင်ပါ။</div>';
+
+      message("appStatus", "Album load error: " + error.message, "error");
+
+      return;
+
+    }
+
+    const visibleAlbums = albums || [];
+
+    if (!visibleAlbums.length) {
+
+      const empty = document.createElement("div");
+
+      empty.className = "empty";
+
+      empty.textContent = "ဒီအကောင့်အတွက် Album မရှိသေးပါ။ Admin က Album သတ်မှတ်ပေးတဲ့အခါ ဒီမှာ ပေါ်လာပါမယ် 🌷";
+
+      $("gallery").append(empty);
+
+      message("appStatus", "");
+
+      return;
+
+    }
+
+
+
+    for (const album of visibleAlbums) {
+
+      const { data: photos, error: photoError } = await supabaseClient.from("photos")
+
+        .select("id,image_path,caption,created_at,sort_order")
+
+        .eq("album_id", album.id).order("sort_order").order("created_at", { ascending: false });
+
+
+
+      const card = document.createElement("article");
+
+      card.className = "album";
+
+      const title = document.createElement("div");
+
+      title.className = "album-title";
+
+      title.textContent = album.title;
+
+      card.append(title);
+
+
+
+      if (album.description) {
+
+        const desc = document.createElement("div");
+
+        desc.className = "album-desc";
+
+        desc.textContent = album.description;
+
+        card.append(desc);
+
+      }
+
+
+
+      if (photoError) {
+
+        const err = document.createElement("div");
+
+        err.className = "caption";
+
+        err.textContent = "ဓာတ်ပုံများကို ဖတ်မရပါ။ " + photoError.message;
+
+        card.append(err);
+
+      } else if (photos?.length) {
+
+        for (const photo of photos) {
+
+          const { data: signed, error: signedError } = await supabaseClient.storage
+
+            .from("private-photos").createSignedUrl(photo.image_path, 300);
+
+          if (signedError || !signed?.signedUrl) continue;
+
+          const img = document.createElement("img");
+
+          img.className = "photo";
+
+          img.loading = "lazy";
+
+          img.alt = photo.caption || album.title;
+
+          img.src = signed.signedUrl;
+
+          img.addEventListener("click", () => {
+
+            $("lightboxImg").src = signed.signedUrl;
+
+            $("lightbox").classList.remove("hidden");
+
+          });
+
+          card.append(img);
+
+          if (photo.caption) {
+
+            const cap = document.createElement("div");
+
+            cap.className = "caption";
+
+            cap.textContent = photo.caption;
+
+            card.append(cap);
+
+          }
+
+        }
+
+      } else {
+
+        const empty = document.createElement("div");
+
+        empty.className = "caption";
+
+        empty.textContent = "ဒီ Album ထဲ ဓာတ်ပုံ မထည့်ရသေးပါ။";
+
+        card.append(empty);
+
+      }
+
+      $("gallery").append(card);
+
+    }
+
+    message("appStatus", "Album တွေကို ပြသပြီးပါပြီ။", "ok");
+
+  }
+
+
+
+  $("closeLightbox").addEventListener("click", () => $("lightbox").classList.add("hidden"));
+
+  $("lightbox").addEventListener("click", (e) => {
+
+    if (e.target === $("lightbox")) $("lightbox").classList.add("hidden");
+
+  });
+
+  document.addEventListener("keydown", (e) => {
+
+    if (e.key === "Escape") $("lightbox").classList.add("hidden");
+
+  });
+
+</script>
+
+</body>
+
+</html>
