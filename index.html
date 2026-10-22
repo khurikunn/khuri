@@ -102,27 +102,176 @@
 
     .gallery-head { display:flex; justify-content:space-between; gap:12px; align-items:end; margin:26px 0 14px; }
 
-    .gallery-head h2 { margin:0; }
+    
+.gallery-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  margin: 34px 0 18px;
+  padding: 20px 22px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(240, 220, 227, .9);
+  box-shadow: 0 8px 25px rgba(123, 63, 83, .07);
+  backdrop-filter: blur(12px);
+}
 
-    .gallery { columns:3 230px; column-gap:16px; }
+.gallery-head h2 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 30px);
+  letter-spacing: -.04em;
+}
 
-    .album { break-inside:avoid; margin:0 0 16px; overflow:hidden; border-radius:18px; background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  align-items: start;
+}
 
-    .album-title { padding:14px 15px 5px; font-weight:800; }
+.album {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 22px;
+  background: rgba(255, 253, 249, .96);
+  border: 1px solid rgba(240, 220, 227, .9);
+  box-shadow: 0 8px 28px rgba(123, 63, 83, .09);
+  transition: transform .25s ease, box-shadow .25s ease;
+  animation: albumAppear .45s ease both;
+}
 
-    .album-desc { padding:0 15px 13px; color:var(--muted); font-size:13px; line-height:1.6; }
+.album:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 34px rgba(184, 79, 117, .16);
+}
 
-    .photo { width:100%; display:block; cursor:zoom-in; background:#f7e5eb; }
+.album-title {
+  padding: 18px 17px 7px;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
 
-    .caption { padding:9px 13px 13px; color:var(--muted); font-size:13px; overflow-wrap:anywhere; }
+.album-desc {
+  padding: 0 17px 15px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
 
-    .empty { text-align:center; color:var(--muted); padding:34px 10px; border:1px dashed #e8cbd5; border-radius:18px; }
+.photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  cursor: zoom-in;
+  background: #f8e6ed;
+  transition: transform .35s ease, filter .35s ease;
+}
 
-    .lightbox { position:fixed; inset:0; z-index:10; background:rgba(39,22,30,.88); display:grid; place-items:center; padding:20px; }
+.album .photo:hover {
+  filter: brightness(1.04);
+}
 
-    .lightbox img { max-width:min(100%,1000px); max-height:82vh; object-fit:contain; border-radius:12px; }
+.caption {
+  padding: 11px 15px 15px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
 
-    .lightbox button { position:absolute; top:18px; right:18px; }
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted);
+  padding: 48px 20px;
+  border: 1px dashed #e8c3d1;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .55);
+  line-height: 1.8;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(35, 18, 27, .94);
+  backdrop-filter: blur(12px);
+  display: grid;
+  place-items: center;
+  padding: 60px 18px 24px;
+  animation: lightboxFade .2s ease;
+}
+
+.lightbox img {
+  max-width: min(100%, 1200px);
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 15px 60px rgba(0, 0, 0, .25);
+}
+
+.lightbox button {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(255, 255, 255, .16);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, .3);
+  backdrop-filter: blur(10px);
+}
+
+.lightbox button:hover {
+  background: var(--pink-deep);
+}
+
+@keyframes albumAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lightboxFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 850px) {
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 520px) {
+  .gallery {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .gallery-head {
+    padding: 16px;
+    border-radius: 18px;
+    align-items: center;
+  }
+
+  .album {
+    border-radius: 20px;
+  }
+
+  .album-title {
+    font-size: 16px;
+  }
+
+  .photo {
+    aspect-ratio: 4 / 3;
+  }
+}
+
 
     footer { text-align:center; color:var(--muted); font-size:12px; padding:30px 0 0; }
 
